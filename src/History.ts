@@ -59,43 +59,6 @@ class History {
 		this.steps = steps;
 	}
 
-	showStepHistory(): String {
-		if (this.steps.length === 0) {
-			return "\nNo history yet";
-		}
-
-		let stepHistory: string = "\n White         Black\n\n";
-
-		const space = 15;
-
-		for (let i = 0; i < this.steps.length; i += 2) {
-			let whiteMove = "";
-
-			let blackMove = "";
-
-			if (i < this.steps.length) {
-				let whiteStep = this.steps[i];
-
-				let whiteMoveKey = Object.keys(whiteStep)[0];
-
-				whiteMove = `${i + 1}. ${whiteMoveKey}`;
-
-				whiteMove = whiteMove.padEnd(space, " ");
-			}
-
-			if (i + 1 < this.steps.length) {
-				let blackStep = this.steps[i + 1];
-
-				let blackMoveKey = Object.keys(blackStep)[0];
-
-				blackMove = `${i + 2}. ${blackMoveKey}`;
-			}
-
-			stepHistory += whiteMove + blackMove + "\n";
-		}
-
-		return stepHistory;
-	}
 }
 
 export default History;

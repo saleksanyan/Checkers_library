@@ -8,7 +8,7 @@ export enum BoardConstants {
 	COLUMNS = 8,
 	ROWS = 8,
 	MOVE_LENGTH = 4,
-	HISTORY_CHECK_LENGTH = 2,
+	HISTORY_CHECK_LENGTH = 12,
 	PAWN_COUNT = 12
 }
 
