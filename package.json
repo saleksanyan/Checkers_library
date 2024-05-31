@@ -2,9 +2,9 @@
 	"name": "checkers",
 	"version": "1.0.0",
 	"description": "",
-	"main": "Start.js",
+	"main": "Checkinggame.js",
 	"scripts": {
-		"start": "node ./dist/Start.js",
+		"start": "node ./dist/Checkinggame.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "",

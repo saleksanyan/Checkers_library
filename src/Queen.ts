@@ -48,7 +48,6 @@ class Queen extends Figure {
 				let backToSamePosition =
 					this.currentPosition.getColumn() === column && this.currentPosition.getRow() === row;
 				if (!sameColorFigure) {
-					console.log(isCaptured + " " + row + " " + column);
 
 					if (isCaptured && (Validations.placeIsEmpty(row, column, board) || backToSamePosition)) {
 						isCaptured = false;

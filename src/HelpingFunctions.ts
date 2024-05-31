@@ -213,6 +213,50 @@ class HelpingFunctions {
 			})
 		);
 	}
+
+	public static undoMove(userChoice: string, board: Board): boolean {
+		if (!Validations.isNumber(userChoice)) {
+			return false;
+		}
+		const userChoiceNum = Number(userChoice);
+	
+		let history = board.getHistory();
+		let stepHistory = history.getSteps();
+		if (userChoiceNum < 0 || userChoiceNum >= stepHistory.length) {
+			return false;
+		}
+		let boardHistory = history.getBoardHistory();
+		let index = parseInt(userChoice.charAt(1));
+		board.setBoard(history.changeBoard(index));
+		history.setBoardHistory(boardHistory.slice(0, index + 1));
+		history.setStepHistory(stepHistory.slice(0, index));
+		HelpingFunctions.changeCountOfFigures(board);
+
+		return true;
+	}
+
+	public static changeCountOfFigures(board: Board): void {
+		let whites = 0;
+		let blacks = 0;
+		let checkersBoard = board.getBoard();
+
+		for (let row = 0; row < BoardConstants.ROWS; row++) {
+			for (let column = 0; column < BoardConstants.COLUMNS; column++) {
+				let figure = checkersBoard[row][column];
+
+				if (figure instanceof Figure) {
+					if (figure.getColor() === Color.BLACK) {
+						blacks++;
+					} else {
+						whites++;
+					}
+				}
+			}
+		}
+
+		board.setBlackCount(blacks);
+		board.setWhiteCount(whites);
+	}
 }
 
 export default HelpingFunctions;

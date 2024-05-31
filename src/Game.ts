@@ -7,6 +7,7 @@ import Position from "./Position";
 import Figure from "./Figure";
 import Move from "./Move";
 import History from "./History";
+import HelpingFunctions from "./HelpingFunctions";
 
 class Game {
 	board: Board;
@@ -66,7 +67,8 @@ class Game {
 				this.board
 			);
             if (doesMoveComplete) {
-
+                this.board.changeTurn();
+                return true;
             }
 		}
 
@@ -77,12 +79,14 @@ class Game {
 		return this.board.getHistory();
 	}
 
-	undoMove() {
-		const history = this.board.getHistory();
-		const prevBoard = history.getByIndex(history.getSize() - 1);
-		if (prevBoard) {
-			this.board.setBoard(prevBoard);
-		}
+    goToPreviousStepByIndex(index: number) {
+        const history = this.board.getHistory();
+        const prevBoard = history.getByIndex(index);
+
+    }
+
+	undoMove(index: string): boolean {
+		return HelpingFunctions.undoMove(index, this.board)
 	}
 
 	getBoardMatrix(): (Figure | Color.EMPTY_PLACE)[][] {
