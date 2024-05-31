@@ -3,7 +3,7 @@ import Position from './Position';
 import Constants, { BoardConstants, Color, GameStatus } from './Constants';
 import Board from './Board';
 import Figure from './Figure';
-import Wornings from './Wornings';
+import Warnings from './Warnings';
 import Move from './Move';
 
 class Validations{

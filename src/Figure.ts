@@ -1,73 +1,62 @@
-import Position from './Position';
+import Position from "./Position";
 import Board from "./Board";
-import HelpingFunctions from './HelpingFunctions';
-import Move from './Move';
+import HelpingFunctions from "./HelpingFunctions";
+import Move from "./Move";
 
+abstract class Figure {
+	protected color: string;
+	protected currentPosition: Position;
 
-abstract class Figure{
+	constructor(color: string, position: Position) {
+		this.color = color;
+		this.currentPosition = position;
+	}
 
+	getColor() {
+		return this.color;
+	}
 
-    protected color: string;
-    protected currentPosition: Position;
-    
-    constructor( color: string, position: Position){
-        this.color = color;
-        this.currentPosition = position;
-    }
+	hasOppositeColor(otherFigure: Figure) {
+		return this.color !== otherFigure.color;
+	}
 
-    getColor(){
-        return this.color;
-    }
+	setPosition(position: Position) {
+		this.currentPosition = position;
+	}
 
-    hasOppositeColor(otherFigure: Figure){
-        return (this.color !== otherFigure.color)
-    }
+	getCurrentPosition() {
+		return this.currentPosition;
+	}
 
-    setPosition(position: Position){
-        this.currentPosition = position;
-    }
+	abstract reachablePositions(board: Board, moves: Move[]): Position[];
 
+	move(position: Position, reachablePositions: Position[], moves: Move[], board: Board): boolean {
+		if (!HelpingFunctions.isReachablePosition(position, reachablePositions)) {
+			return false;
+		}
+		let boardHistory = board.getHistory();
+		boardHistory.addBoardHistory(HelpingFunctions.deepCopyMatrix(board.getBoard()));
+		let path = HelpingFunctions.findPath(moves, position, this.currentPosition);
+		let move: Move;
+		for (let positionIndex = 0; positionIndex < path.length; positionIndex++) {
+			move = path[positionIndex];
+			let row = move.getStart().getRow();
+			let column = move.getStart().getColumn();
+			let newRow = move.getDest().getRow();
+			let newColumn = move.getDest().getColumn();
+			let startPos = move.getStart();
+			let destPos = move.getDest();
 
-    getCurrentPosition(){
-        return this.currentPosition;
-    }
-
-
-    abstract reachablePositions(board: Board, moves: Move[]): Position[] ;
-    
-
-    move(position: Position, reachablePositions: Position[], moves: Move[], board: Board): boolean{
-
-        if(!HelpingFunctions.isReachablePosition(position, reachablePositions)){
-            return false;
-        }
-        let boardHistory = board.getHistory();
-        boardHistory.addBoardHistory(HelpingFunctions.deepCopyMatrix(board.getBoard()));
-        let path = HelpingFunctions.findPath(moves, position, this.currentPosition);
-        let move: Move;
-        for (let positionIndex = 0; positionIndex < path.length; positionIndex++) {
-            move = path[positionIndex];
-            let row = move.getStart().getRow();
-            let column = move.getStart().getColumn();
-            let newRow = move.getDest().getRow();
-            let newColumn = move.getDest().getColumn();
-            let startPos = move.getStart();
-            let destPos = move.getDest();
-
-            HelpingFunctions.deleteAllfiguresBetweenGivenPositions
-                (startPos, destPos, board);
-                HelpingFunctions.swap(newRow, newColumn, row, column, board);
-        }
-        let figure = board.getBoard()[position.getRow()][position.getColumn()];
-        if(figure instanceof Figure){
-            boardHistory.addStepHistory(new Move(this.currentPosition, position), board.getWhosTurn());
-            this.setPosition(position);
-        }
-        return true;
-    }
-
-
+			HelpingFunctions.deleteAllfiguresBetweenGivenPositions(startPos, destPos, board);
+			HelpingFunctions.swap(newRow, newColumn, row, column, board);
+		}
+		let figure = board.getBoard()[position.getRow()][position.getColumn()];
+		if (figure instanceof Figure) {
+			boardHistory.addStepHistory(new Move(this.currentPosition, position), board.getWhosTurn());
+			this.setPosition(position);
+		}
+		return true;
+	}
 }
-
 
 export default Figure;

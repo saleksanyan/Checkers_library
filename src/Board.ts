@@ -1,116 +1,76 @@
-import Figure from './Figure';
-import HelpingFunctions from './HelpingFunctions';
-import History from './History';
-import { Color } from './Constants';
+import Figure from "./Figure";
+import HelpingFunctions from "./HelpingFunctions";
+import History from "./History";
+import { BoardConstants, Color } from "./Constants";
 
+class Board {
+	private matrix: (Figure | Color.EMPTY_PLACE)[][];
+	private blackCounter: number;
+	private whiteCounter: number;
+	private history: History;
+	private whosTurn: Color.BLACK | Color.WHITE;
 
-class Board{
-
-
-    private matrix: (Figure | Color.EMPTY_PLACE)[][];
-    private blackCounter: number;
-    private whiteCounter: number;
-    private history: History;
-    private whosTurn: string;
-
-    constructor(){
-        this.matrix = [[],[],[],[],[],[],[],[]];
+	constructor() {
+		this.matrix = new Array(BoardConstants.ROWS).fill(
+            null).map(() => new Array(BoardConstants.COLUMNS));
         this.history = new History();
         HelpingFunctions.constructBoard(this.matrix);
         this.whosTurn = Color.WHITE;
-        this.blackCounter = 12;
-        this.whiteCounter = 12;
+        this.blackCounter = BoardConstants.PAWN_COUNT;
+        this.whiteCounter = BoardConstants.PAWN_COUNT;
+	}
+
+	decrementWhiteCounter() {
+		this.whiteCounter--;
+	}
+
+	decrementBlackCounter() {
+		this.blackCounter--;
+	}
+
+	getWhiteCounter(): number {
+		return this.whiteCounter;
+	}
+
+	getBlackCounter(): number {
+		return this.blackCounter;
+	}
+
+	getWhosTurn(): Color {
+		return this.whosTurn;
+	}
+
+	getBoard(): (Figure | Color.EMPTY_PLACE)[][] {
+		return this.matrix;
+	}
+
+	getHistory(): History {
+	    return this.history;
+	}
+
+    setWhiteCount(count: number) {
+		this.whiteCounter = count;
+	}
+
+	setBlackCount(count: number) {
+		this.blackCounter = count;
+	}
+
+	setBoard(newBoard: (Figure | Color.EMPTY_PLACE)[][]) {
+		this.matrix = newBoard;
+	}
+
+    setHistory(history: History) {
+        this.history = history;
     }
 
-    decrementWhiteCounter(){
-        this.whiteCounter--;
-    }
+	changeTurn() {
+		this.whosTurn = this.whosTurn === Color.WHITE ? Color.BLACK : Color.WHITE;
+	}
 
-
-    decrementBlackCounter(){
-        this.blackCounter--;
-    }
-
-    getWhiteCounter(){
-        return this.whiteCounter;
-    }
-
-    getBlackCounter(){
-        return this.blackCounter;
-    }
-
-    getWhosTurn(){
-        return this.whosTurn;
-    }
-
-    setWhiteCount( count: number ){
-        this.whiteCounter = count;
-    }
-
-
-    setBlackCount( count: number ){
-        this.blackCounter = count;
-    }
-
-    
-    setBoard( newBoard: (Figure | Color.EMPTY_PLACE)[][] ){
-        this.matrix = newBoard;
-    }
-
-    getBoard(){
-        return this.matrix;
-    }
-
-    getHistory(){
-        return this.history;
-    }
-
-    setWhosTurn( whosTurn: string){
-        this.whosTurn = whosTurn;
-    }
-
-    changeTurn(){
-        this.whosTurn = (this.whosTurn === Color.WHITE) ? Color.BLACK : Color.WHITE;
-    }
-    
-    end(){
-        return this.blackCounter === 0 || this.whiteCounter=== 0;
-    }
-
-    toString(){
-        let board = '\n___________________________________________\n';
-        // if(this.getWhosTurn() === Color.WHITE){
-            for (let row = 0; row < this.matrix.length; row++) {
-                
-                board+= ' '+(8-row)+' | ';
-                for (let column = 0; column < this.matrix.length; column++) {
-                    if(this.matrix[row][column] === ' '){
-                        board += '  '+' | ';
-                    }else{
-                        board += this.matrix[row][column]+' | ';
-                    }
-                }
-                board += '\n___________________________________________\n';
-            }
-        // }else{
-        //     for (let row = this.matrix.length-1; row >= 0 ; row--) {
-                
-        //         board+= ' '+(8-row)+' | ';
-        //         for (let column = 0; column < this.matrix.length; column++) {
-        //             if(this.matrix[row][column] === ' '){
-        //                 board += '  '+' | ';
-        //             }else{
-        //                 board += this.matrix[row][column]+' | ';
-        //             }
-        //         }
-        //         board += '\n___________________________________________\n';
-        //     }
-        // }
-        board+= '     A    B    C    D    E    F    G    H\n';
-        return board;
-    }
-
-
+	DoesGameEnd(): boolean {
+		return this.blackCounter === 0 || this.whiteCounter === 0;
+	}
 }
 
 export default Board;
