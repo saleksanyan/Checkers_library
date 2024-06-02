@@ -1,8 +1,8 @@
 import Constants, { BoardConstants } from "./Constants";
 
 class Position {
-	private row: number;
-	private column: number;
+	row: number;
+	column: number;
 
 	constructor(placeOnBoard: string) {
 		let placeToNum = parseInt(placeOnBoard.charAt(1));
