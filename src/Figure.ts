@@ -2,12 +2,13 @@ import Position from "./Position";
 import Board from "./Board";
 import HelpingFunctions from "./HelpingFunctions";
 import Move from "./Move";
+import { Color } from "./Constants";
 
 abstract class Figure {
-	protected color: string;
+	protected color: Color;
 	protected currentPosition: Position;
 
-	constructor(color: string, position: Position) {
+	constructor(color: Color, position: Position) {
 		this.color = color;
 		this.currentPosition = position;
 	}

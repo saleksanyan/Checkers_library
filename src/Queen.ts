@@ -8,7 +8,7 @@ import HelpingFunctions from "./HelpingFunctions";
 import Move from "./Move";
 
 class Queen extends Figure {
-	constructor(color: string, position: Position) {
+	constructor(color: Color, position: Position) {
 		super(color, position);
 	}
 

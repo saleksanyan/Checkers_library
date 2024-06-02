@@ -12,7 +12,7 @@ class Pawn extends Figure {
 
 	private readonly reachablePositionsAfterEating = [2, -2];
 
-	constructor(color: string, currentPosition: Position) {
+	constructor(color: Color, currentPosition: Position) {
 		super(color, currentPosition);
 	}
 
@@ -42,13 +42,15 @@ class Pawn extends Figure {
 			) {
 				let eatableFigureRow = this.reachablePositionsWithoutEating[reachableRow] + row;
 				let eatableFigureColumn = this.reachablePositionsWithoutEating[reachableColumn] + column;
+				debugger;
 				let figuresNewRow = this.reachablePositionsAfterEating[reachableRow] + row;
 				let figuresNewColumn = this.reachablePositionsAfterEating[reachableColumn] + column;
 
 				if (Validations.isValidPlace(eatableFigureRow, eatableFigureColumn)) {
 					if (
 						Validations.placeIsEmpty(eatableFigureRow, eatableFigureColumn, board) &&
-						!afterEating
+						!afterEating &&
+						Validations.notStepBack(this.getColor(), eatableFigureRow, this.currentPosition)
 					) {
 						HelpingFunctions.addingPositionToArray(
 							eatableFigureRow,

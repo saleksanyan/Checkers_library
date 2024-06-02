@@ -2,7 +2,6 @@ import Position from "./Position";
 import { BoardConstants, Color } from "./Constants";
 import Board from "./Board";
 import Figure from "./Figure";
-import Move from "./Move";
 
 class Validations {
 	public static isValidPlace(row: number, column: number): boolean {
@@ -19,6 +18,13 @@ class Validations {
 			hasSameColor = figure.getColor() === board.getWhosTurn();
 		}
 		return hasSameColor && this.isValidPlace(position.getRow(), position.getColumn());
+	}
+
+	public static notStepBack(figurColor: Color, row: number, currentPosition: Position) {
+		if (figurColor === Color.WHITE) {
+			return currentPosition.getRow() > row;
+		}
+		return currentPosition.getRow() < row;
 	}
 
 	public static placeIsEmpty(row: number, column: number, board: Board): boolean {
