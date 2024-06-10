@@ -1,8 +1,8 @@
-import Position from "./Position";
-import Board from "./Board";
-import HelpingFunctions from "./HelpingFunctions";
-import Move from "./Move";
-import { Color } from "./Constants";
+import Position from './Position';
+import Board from './Board';
+import HelpingFunctions from './HelpingFunctions';
+import Move from './Move';
+import { Color } from './Constants';
 
 abstract class Figure {
 	protected color: Color;
@@ -13,8 +13,14 @@ abstract class Figure {
 		this.currentPosition = position;
 	}
 
+	abstract toJSON(): any;
+
 	getColor() {
 		return this.color;
+	}
+
+	setColor(color: Color) {
+		this.color = color;
 	}
 
 	hasOppositeColor(otherFigure: Figure) {
@@ -30,7 +36,6 @@ abstract class Figure {
 	}
 
 	abstract reachablePositions(board: Board, moves: Move[]): Position[];
-
 	move(position: Position, reachablePositions: Position[], moves: Move[], board: Board): boolean {
 		if (!HelpingFunctions.isReachablePosition(position, reachablePositions)) {
 			return false;
@@ -53,8 +58,8 @@ abstract class Figure {
 		}
 		let figure = board.getBoard()[position.getRow()][position.getColumn()];
 		if (figure instanceof Figure) {
-			boardHistory.addStepHistory(new Move(this.currentPosition, position), board.getWhosTurn());
-			this.setPosition(position);
+			boardHistory.addStepHistory(new Move(figure.currentPosition, position), board.getWhosTurn());
+			figure.setPosition(position);
 		}
 		return true;
 	}

@@ -1,7 +1,9 @@
-import Position from "./Position";
-import { BoardConstants, Color } from "./Constants";
-import Board from "./Board";
-import Figure from "./Figure";
+import Position from './Position';
+import { BoardConstants, Color } from './Constants';
+import Board from './Board';
+import Figure from './Figure';
+import Pawn from './Pawn';
+import { log } from 'console';
 
 class Validations {
 	public static isValidPlace(row: number, column: number): boolean {
@@ -11,9 +13,12 @@ class Validations {
 	public static isValidPosition(userInput: string, board: Board): boolean {
 		if (userInput.length !== 2) return false;
 		if (!this.isNumber(userInput.charAt(1))) return false;
+
 		let position = new Position(userInput);
+
 		let figure = board.getBoard()[position.getRow()][position.getColumn()];
 		let hasSameColor = false;
+		console.log(typeof figure);
 		if (figure instanceof Figure) {
 			hasSameColor = figure.getColor() === board.getWhosTurn();
 		}
@@ -31,7 +36,7 @@ class Validations {
 		return board.getBoard()[row][column] === Color.EMPTY_PLACE;
 	}
 	public static isNumber(value: string): boolean {
-		return value !== "" && !isNaN(Number(value.toString()));
+		return value !== '' && !isNaN(Number(value.toString()));
 	}
 }
 

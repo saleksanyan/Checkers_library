@@ -1,6 +1,8 @@
-import { Color } from "./Constants";
-import Figure from "./Figure";
-import Move from "./Move";
+import { Color } from './Constants';
+import Figure from './Figure';
+import Move from './Move';
+import Pawn from './Pawn';
+import Queen from './Queen';
 
 class History {
 	private boardHistory: (Figure | Color.EMPTY_PLACE)[][][];
@@ -11,6 +13,38 @@ class History {
 	constructor() {
 		this.boardHistory = [];
 		this.steps = [];
+	}
+
+	static fromJSON(json: any): History {
+		const history = new History();
+		history.boardHistory = json.boardHistory.map((snapshot: any) =>
+			snapshot.map((row: any) =>
+				row.map((cell: any) => {
+					if (cell !== Color.EMPTY_PLACE && cell != undefined) {
+						if (cell.__class == 'Pawn') {
+							return Pawn.fromJSON(cell);
+						} else {
+							return Queen.fromJSON(cell);
+						}
+					} else {
+						return cell;
+					}
+				}),
+			),
+		);
+		history.size = json.size;
+		history.steps = json.steps;
+		return history;
+	}
+
+	toJSON() {
+		return {
+			boardHistory: this.boardHistory.map((snapshot) =>
+				snapshot.map((row) => row.map((cell) => (cell instanceof Figure ? cell.toJSON() : cell))),
+			),
+			size: this.size,
+			steps: this.steps,
+		};
 	}
 
 	getBoardHistory() {
@@ -58,7 +92,6 @@ class History {
 	setStepHistory(steps: { [move: string]: string }[]) {
 		this.steps = steps;
 	}
-
 }
 
 export default History;
